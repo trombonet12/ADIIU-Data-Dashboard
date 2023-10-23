@@ -28,5 +28,5 @@ app.listen('3000', () => {
 
 // Route to serve inicio.html
 app.get('/', function(req, res) {
-    res.sendFile(__dirname + '/inicio.html');
+    res.sendFile(__dirname + '/index.html');
 });
