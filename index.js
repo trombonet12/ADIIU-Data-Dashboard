@@ -30,8 +30,8 @@ app.listen('3000', () => {
     console.log('Server started on port 3000');
 });
 
-// Handle request for data
-app.get('/data', (req, res) => {
+// Handle request for generos
+app.get('/generos', (req, res) => {
     db.query(`
         SELECT genre, COUNT(*) AS count
         FROM (
@@ -48,7 +48,8 @@ app.get('/data', (req, res) => {
             SELECT genre6 AS genre FROM applicationgenres
         ) AS subquery
         WHERE genre IS NOT NULL
-        GROUP BY genre;
+        GROUP BY genre
+        ORDER BY count DESC;
     `, (err, results) => {
         if (err) {
             throw err;

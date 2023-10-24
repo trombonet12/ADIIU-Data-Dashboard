@@ -1,17 +1,14 @@
 document.addEventListener('DOMContentLoaded', function () {
-    fetch('/data')
+    fetch('/generos')
     .then(response => response.json())
     .then(data => {
         // Create the Highcharts chart
-        Highcharts.chart('container', {
+        Highcharts.chart('container1', {
             chart: {
-                type: 'column'
+                type: 'pie'
             },
             title: {
-                text: 'Game Genres'
-            },
-            xAxis: {
-                type: 'category'
+                text: ''
             },
             yAxis: {
                 title: {
