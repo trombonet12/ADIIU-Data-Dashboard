@@ -19,7 +19,7 @@ const db = mysql.createConnection({
 
 // Connect to the database
 db.connect((err) => {
-    if(err) {
+    if (err) {
         throw err;
     }
     console.log('MySQL Connected...');
@@ -30,8 +30,8 @@ app.listen('3000', () => {
     console.log('Server started on port 3000');
 });
 
-// Handle request for data
-app.get('/data', (req, res) => {
+// Handle request for generos
+app.get('/generos', (req, res) => {
     db.query(`
         SELECT genre, COUNT(*) AS count
         FROM (
@@ -48,7 +48,8 @@ app.get('/data', (req, res) => {
             SELECT genre6 AS genre FROM applicationgenres
         ) AS subquery
         WHERE genre IS NOT NULL
-        GROUP BY genre;
+        GROUP BY genre
+        ORDER BY count DESC;
     `, (err, results) => {
         if (err) {
             throw err;
@@ -63,6 +64,82 @@ app.get('/data', (req, res) => {
         // Send the data to the client
         res.json(data);
     });
+});
+
+// Handle request for desarrolladores
+app.get('/desarrolladores', (req, res) => {
+    db.query(`
+    SELECT developer, COUNT(*) AS count
+    FROM applicationdevelopers
+    GROUP BY developer
+    ORDER BY count DESC
+    LIMIT 20;
+    `,
+        (err, results) => {
+            if (err) {
+                throw err;
+            }
+
+            // Transform the data into a format that can be used by Highcharts
+            const data = results.map(result => ({
+                name: result.developer,
+                y: result.count
+            }));
+
+            // Send the data to the client
+            res.json(data);
+        });
+});
+
+app.get('/cantidad', (req, res) => {
+    db.query(`
+    SELECT count AS conteo, COUNT(*) AS cantidad_developers
+    FROM (
+        SELECT developer, COUNT(*) AS count
+        FROM applicationdevelopers
+        GROUP BY developer
+    ) AS subconsulta
+    GROUP BY count;
+    `,
+        (err, results) => {
+            if (err) {
+                throw err;
+            }
+
+            // Transform the data into a format that can be used by Highcharts
+            const data = results.map(result => ({
+                name: result.conteo,
+                y: result.cantidad_developers
+            }));
+
+            // Send the data to the client
+            res.json(data);
+        }
+    );
+});
+
+app.get('/tipo', (req, res) => {
+    db.query(`
+    SELECT type, COUNT(type) AS conteo
+    FROM applicationinformation
+    WHERE type IN ('game', 'advertising', 'dlc', 'mod')
+    GROUP BY type;
+    `,
+        (err, results) => {
+            if (err) {
+                throw err;
+            }
+
+            // Transform the data into a format that can be used by Highcharts
+            const data = results.map(result => ({
+                name: result.type,
+                y: result.conteo
+            }));
+
+            // Send the data to the client
+            res.json(data);
+        }
+    );
 });
 
 app.use('/', express.static(path.join(__dirname, '')));
