@@ -116,7 +116,30 @@ app.get('/cantidad', (req, res) => {
             res.json(data);
         }
     );
-}
-);
+});
+
+app.get('/tipo', (req, res) => {
+    db.query(`
+    SELECT type, COUNT(type) AS conteo
+    FROM applicationinformation
+    WHERE type IN ('game', 'advertising', 'dlc', 'mod')
+    GROUP BY type;
+    `,
+        (err, results) => {
+            if (err) {
+                throw err;
+            }
+
+            // Transform the data into a format that can be used by Highcharts
+            const data = results.map(result => ({
+                name: result.type,
+                y: result.conteo
+            }));
+
+            // Send the data to the client
+            res.json(data);
+        }
+    );
+});
 
 app.use('/', express.static(path.join(__dirname, '')));
