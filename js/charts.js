@@ -53,4 +53,42 @@ document.addEventListener('DOMContentLoaded', function () {
             }]
         });
     });
+
+    fetch('/cantidad')
+    .then(response => response.json())
+    .then(data => {
+        // Create the Highcharts chart
+        Highcharts.chart('container3', {
+            chart: {
+                type: 'scatter'
+            },
+            title: {
+                text: ''
+            },
+            xAxis: {
+                tickInterval: 1,
+            },
+            yAxis: {
+                title: {
+                    text: 'Cantidad de desarrolladores'
+                }
+            },
+            plotOptions: {
+                scatter: {
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.y}',
+                        style: {
+                            color: 'black'
+                        }
+                    }
+                }
+            },
+            series: [{
+                name: 'Numero de juegos',
+                data: data.map(item => ({x: item.name, y: item.y}))
+            }]
+        });
+              
+    });
 });

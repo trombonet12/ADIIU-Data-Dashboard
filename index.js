@@ -91,4 +91,32 @@ app.get('/desarrolladores', (req, res) => {
         });
 });
 
+app.get('/cantidad', (req, res) => {
+    db.query(`
+    SELECT count AS conteo, COUNT(*) AS cantidad_developers
+    FROM (
+        SELECT developer, COUNT(*) AS count
+        FROM applicationdevelopers
+        GROUP BY developer
+    ) AS subconsulta
+    GROUP BY count;
+    `,
+        (err, results) => {
+            if (err) {
+                throw err;
+            }
+
+            // Transform the data into a format that can be used by Highcharts
+            const data = results.map(result => ({
+                name: result.conteo,
+                y: result.cantidad_developers
+            }));
+
+            // Send the data to the client
+            res.json(data);
+        }
+    );
+}
+);
+
 app.use('/', express.static(path.join(__dirname, '')));
