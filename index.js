@@ -19,7 +19,7 @@ const db = mysql.createConnection({
 
 // Connect to the database
 db.connect((err) => {
-    if(err) {
+    if (err) {
         throw err;
     }
     console.log('MySQL Connected...');
@@ -64,6 +64,31 @@ app.get('/generos', (req, res) => {
         // Send the data to the client
         res.json(data);
     });
+});
+
+// Handle request for desarrolladores
+app.get('/desarrolladores', (req, res) => {
+    db.query(`
+    SELECT developer, COUNT(*) AS count
+    FROM applicationdevelopers
+    GROUP BY developer
+    ORDER BY count DESC
+    LIMIT 20;
+    `,
+        (err, results) => {
+            if (err) {
+                throw err;
+            }
+
+            // Transform the data into a format that can be used by Highcharts
+            const data = results.map(result => ({
+                name: result.developer,
+                y: result.count
+            }));
+
+            // Send the data to the client
+            res.json(data);
+        });
 });
 
 app.use('/', express.static(path.join(__dirname, '')));
