@@ -5,7 +5,9 @@ document.addEventListener('DOMContentLoaded', function () {
             // Create the Highcharts chart
             Highcharts.chart('container1', {
                 chart: {
-                    type: 'pie'
+                    type: 'pie',
+                    backgroundColor: '#191C24',
+                    description: 'Distribution of Genres'
                 },
                 title: {
                     text: ''
@@ -22,13 +24,15 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
 
-    fetch('/desarrolladores')
+        fetch('/desarrolladores')
         .then(response => response.json())
         .then(data => {
             // Create the Highcharts chart
             Highcharts.chart('container2', {
                 chart: {
-                    type: 'bar'
+                    type: 'bar',
+                    backgroundColor: '#191C24',
+                    description: 'Number of Games by Developer (TOP 20)'
                 },
                 title: {
                     text: ''
@@ -38,39 +42,77 @@ document.addEventListener('DOMContentLoaded', function () {
                     crosshair: true,
                     labels: {
                         style: {
-                            fontSize: '8px'
-                        }
+                            color: 'white',
+                            fontSize: '9px'
+                        },
+                        description: 'Developer Names'
                     }
                 },
                 yAxis: {
                     title: {
                         text: ''
+                    },
+                    labels: {
+                        style: {
+                            color: 'white' 
+                        },
+                        description: 'Y-axis representing the number of games'
                     }
                 },
                 series: [{
                     name: 'Numero de juegos',
-                    data: data.map(item => item.y)
-                }]
+                    data: data.map(item => item.y),
+                    dataLabels: {
+                        style: {
+                            color: 'white' //No se quiere cambiar de color :(
+                        }
+                    }
+                }],
+                plotOptions: {
+                    series: {
+                        dataLabels: {
+                            color: 'white' 
+                        }
+                    }
+                }
             });
         });
 
-    fetch('/cantidad')
+
+        fetch('/cantidad')
         .then(response => response.json())
         .then(data => {
             // Create the Highcharts chart
             Highcharts.chart('container3', {
                 chart: {
-                    type: 'scatter'
+                    type: 'scatter',
+                    backgroundColor: '#191C24',
+                    description: 'Scatter Plot of Number of Games by Developer'
                 },
                 title: {
                     text: ''
                 },
                 xAxis: {
                     tickInterval: 1,
+                    labels: {
+                        style: {
+                            color: 'white'
+                        },
+                        description: 'Number of Games'
+                    }
                 },
                 yAxis: {
                     title: {
-                        text: 'Cantidad de desarrolladores'
+                        text: 'Cantidad de desarrolladores',
+                        style: {
+                            color: 'white' 
+                        }
+                    },
+                    labels: {
+                        style: {
+                            color: 'white'
+                        },
+                        description: 'Y-axis representing the number of developers'
                     }
                 },
                 plotOptions: {
@@ -79,14 +121,19 @@ document.addEventListener('DOMContentLoaded', function () {
                             enabled: true,
                             format: '{point.y}',
                             style: {
-                                color: 'black'
+                                color: 'white'
                             }
                         }
                     }
                 },
                 series: [{
                     name: 'Numero de juegos',
-                    data: data.map(item => ({ x: item.name, y: item.y }))
+                    data: data.map(item => ({ x: item.name, y: item.y })),
+                    dataLabels: {
+                        style: {
+                            color: 'white' //No se quiere cambiar de color :(
+                        }
+                    }
                 }]
             });
         });
@@ -100,13 +147,16 @@ document.addEventListener('DOMContentLoaded', function () {
                     plotBackgroundColor: null,
                     plotBorderWidth: null,
                     plotShadow: false,
-                    type: 'pie'
+                    type: 'pie',
+                    backgroundColor: '#191C24',
+                    description: 'Distribution of Types'
                 },
                 title: {
                     text: ''
                 },
                 tooltip: {
-                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
+                    description: 'Hover over a section to view percentage'
                 },
                 accessibility: {
                     point: {
