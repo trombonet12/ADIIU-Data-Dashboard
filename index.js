@@ -1,3 +1,7 @@
+// ADIUU PRÁCTICA 1
+// AUTORES: JOAN LÓPEZ FERRER Y PABLO CABRER REINÉS
+// INDEX.JS
+
 // Import required modules
 const express = require('express');
 const mysql = require('mysql');
