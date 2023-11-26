@@ -287,3 +287,12 @@
     background: var(--dark);
     border-color: var(--primary);
 }
+
+
+text {
+    fill: white !important;
+}
+
+.highcharts-label-box {
+    fill: #000000 !important;
+}
