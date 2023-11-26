@@ -288,9 +288,11 @@
     border-color: var(--primary);
 }
 
-/***
-text{
-    color: white !important;
+
+text {
     fill: white !important;
 }
-***/
+
+.highcharts-label-box {
+    fill: #000000 !important;
+}
